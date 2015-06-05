@@ -9,6 +9,8 @@ if (!file_exists(__DIR__.'/config.yml')) {
     exit(-1);
 }
 
+header('Content-Type: text/text');
+
 $defaults = array(
     'bin' => 'bin/satis',
     'json' => 'satis.json',
@@ -45,13 +47,11 @@ if (null !== $config['user']) {
 }
 
 $process = new Process($command);
-$exitCode = $process->run(function ($type, $buffer) {
-    if ('err' === $type) {
-        echo 'E';
-        error_log($buffer);
-    } else {
-        echo '.';
-    }
-});
+$process->run();
 
-echo "\n\n" . ($exitCode === 0 ? 'Successful rebuild!' : 'Oops! An error occured!') . "\n";
+if (!$process->isSuccessful()) {
+    echo "ERROR ================================"
+    echo $process->getErrorOutput()."\n";
+    echo "======================================\n\n"
+}
+echo $process->getOutput();
