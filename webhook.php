@@ -50,8 +50,8 @@ $process = new Process($command);
 $process->run();
 
 if (!$process->isSuccessful()) {
-    echo "ERROR ================================"
+    echo "ERROR ================================";
     echo $process->getErrorOutput()."\n";
-    echo "======================================\n\n"
+    echo "======================================\n\n";
 }
 echo $process->getOutput();
