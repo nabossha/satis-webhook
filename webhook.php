@@ -42,7 +42,7 @@ if (!empty($errors)) {
 }
 
 if ($config['pre-build-hook']) {
-    runProcess($command);
+    runProcess($config['pre-build-hook']);
 }
 
 $command = sprintf('%s build %s %s', $config['bin'], $config['json'], $config['webroot']);
