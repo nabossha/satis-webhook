@@ -41,17 +41,26 @@ if (!empty($errors)) {
     exit(-1);
 }
 
+if ($config['pre-build-hook']) {
+    runProcess($command);
+}
+
 $command = sprintf('%s build %s %s', $config['bin'], $config['json'], $config['webroot']);
 if (null !== $config['user']) {
     $command = sprintf('sudo -u %s -i %s', $config['user'], $command);
 }
 
-$process = new Process($command);
-$process->run();
+runProcess($command);
 
-if (!$process->isSuccessful()) {
-    echo "ERROR ================================";
-    echo $process->getErrorOutput()."\n";
-    echo "======================================\n\n";
+function runProcess($command) {
+	$process = new Process($command);
+	$process->run();
+
+	if (!$process->isSuccessful()) {
+
+	    echo "================= ERROR =================";
+	    echo $process->getErrorOutput()."\n";
+	    echo "=========================================\n\n";
+	}
+	echo $process->getOutput();
 }
-echo $process->getOutput();
